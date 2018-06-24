@@ -1,2 +1,2 @@
 # FileCopier
-Simple file copy service written in .Net Core
+Simple file archive service written in .Net Core
