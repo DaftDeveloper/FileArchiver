@@ -1,5 +1,5 @@
 # FileArchiver
-Simple file archive/copy service written in .NET Core 2.1. Currently, the main use case for this app is for me to easily transfer photos from my camera cards to my image repo on disk storage. Because I have a very specific use case and directory structure that I use for storing images, I have not spent a lot of time customizing this app.
+Simple file archive/copy service written in .NET Core 3.1. Currently, the main use case for this app is for me to easily transfer photos from my camera cards to my image repo on disk storage. Because I have a very specific use case and directory structure that I use for storing images, I have not spent a lot of time customizing this app.
 
 # Features
 
