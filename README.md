@@ -4,7 +4,7 @@ Simple file archive/copy service written in .NET Core 3.1. Currently, the main u
 # Features
 
 * Copies all files in source directory/subdirectories to destination directory.
-* Destination files will be copied using the pattern ROOT\yyyy-DD-mm\yyyyMMdd-HHmmss_<Original Filename>
+* Destination files will be copied using the pattern ROOT\yyyy-DD-mm\yyyyMMdd-HHmmss_OriginalFilenameAndExtension
 * Uses Task Parallel Library (TPL) with -p argument to make better use of multi-core systems.
 
 # Future Enhancements
