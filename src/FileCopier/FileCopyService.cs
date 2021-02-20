@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DaftDev.FileCopier.Enums;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,13 +9,14 @@ namespace DaftDev.FileCopier
 {
     public class FileCopyService
     {
-        private readonly string _sourceDir;
-        private readonly string _destDir;
-        private readonly bool _isParallel;
+        readonly string _sourceDir;
+        readonly string _destDir;
+        readonly bool _isParallel;
 
-        private readonly IEnumerable<string> _allowedExtensions;
+        readonly IEnumerable<string> _allowedExtensions;
+        readonly TimestampSource _timestampSource;
 
-        public FileCopyService(string sourceDir, string destDir, IEnumerable<string> allowedExtensions, bool isParallel = true)
+        public FileCopyService(string sourceDir, string destDir, IEnumerable<string> allowedExtensions, bool isParallel = true, TimestampSource timestampSource = TimestampSource.CreatedTimestamp)
         {
             _sourceDir = sourceDir;
             _destDir = destDir;
@@ -51,7 +53,7 @@ namespace DaftDev.FileCopier
             }
         }
 
-        private void ProcessFilesParallel(IEnumerable<string> files)
+        void ProcessFilesParallel(IEnumerable<string> files)
         {
             Console.WriteLine("Parallel processing enabled.");
 
@@ -60,7 +62,7 @@ namespace DaftDev.FileCopier
             });
         }
 
-        private void ProcessFile(string file)
+        void ProcessFile(string file)
         {
             Console.WriteLine($"Processing file {file}");
 
@@ -68,9 +70,7 @@ namespace DaftDev.FileCopier
 
             var newFilename = $"{fileInfo.CreationTime.ToString("yyyyMMdd-HHmmss")}_{fileInfo.Name}";
 
-            var newDirectory = Path.Combine(_destDir,
-                fileInfo.CreationTime.ToString("yyyy"),
-                fileInfo.CreationTime.ToString("yyyy-MM-dd"));
+            var newDirectory = GetDestinationDirectory(fileInfo);
 
             var newPath = Path.Combine(newDirectory, newFilename);
             Directory.CreateDirectory(newDirectory);
@@ -83,6 +83,22 @@ namespace DaftDev.FileCopier
             else
             {
                 Console.WriteLine($"{newPath} already exists");
+            }
+        }
+
+        string GetDestinationDirectory(FileInfo fileInfo)
+        {
+            if(_timestampSource == TimestampSource.CreatedTimestamp)
+            {
+                return Path.Combine(_destDir,
+                fileInfo.CreationTime.ToString("yyyy"),
+                fileInfo.CreationTime.ToString("yyyy-MM-dd"));
+            }
+            else
+            {
+                return Path.Combine(_destDir,
+                fileInfo.LastWriteTime.ToString("yyyy"),
+                fileInfo.LastWriteTime.ToString("yyyy-MM-dd"));
             }
         }
     }

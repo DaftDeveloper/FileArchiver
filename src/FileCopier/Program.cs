@@ -1,4 +1,5 @@
-﻿using McMaster.Extensions.CommandLineUtils;
+﻿using DaftDev.FileCopier.Enums;
+using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -48,12 +49,13 @@ namespace DaftDev.FileCopier
             var parallelArgument = app.Option("-p|--parallel", "Process files in parallel.", CommandOptionType.NoValue);
 
             var allowedExtensions = CreateAllowedExtensionsList();
+            var timestampSource = Enum.Parse<TimestampSource>(Configuration["TimestampSource"]);
 
             app.OnExecute(() =>
             {
                 Console.WriteLine("Starting file copying service.");
 
-                var fileService = new FileCopyService(inputDirectory.Value(), outputDirectory.Value(), allowedExtensions, parallelArgument.HasValue());
+                var fileService = new FileCopyService(inputDirectory.Value(), outputDirectory.Value(), allowedExtensions, parallelArgument.HasValue(), timestampSource);
                 fileService.ProcessMoves();
 
                 Console.WriteLine("Processing complete, press any key to continue...");
