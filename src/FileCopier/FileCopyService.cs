@@ -22,6 +22,7 @@ namespace DaftDev.FileCopier
             _destDir = destDir;
             _allowedExtensions = allowedExtensions;
             _isParallel = isParallel;
+            _timestampSource = timestampSource;
         }
 
         public void ProcessMoves()
